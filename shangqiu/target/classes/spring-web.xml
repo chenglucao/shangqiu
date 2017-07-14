@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util" xmlns:cache="http://www.springframework.org/schema/cache"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans     
+          http://www.springframework.org/schema/beans/spring-beans.xsd     
+          http://www.springframework.org/schema/context     
+          http://www.springframework.org/schema/context/spring-context.xsd     
+          http://www.springframework.org/schema/mvc 
+          http://www.springframework.org/schema/mvc/spring-mvc.xsd  
+          http://www.springframework.org/schema/util 
+      	  http://www.springframework.org/schema/util/spring-util.xsd
+          http://www.springframework.org/schema/cache   
+          http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<context:component-scan base-package="com.shangqiu" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
+	<!-- 由于取消自动注册，DispatcherServlet会在spring上下文寻找 id 为 handlerExceptionResolver作为异常解析器 -->
+	<bean id="handlerExceptionResolver" class="com.shangqiu.exception.AnnotationHandlerMethodExceptionResolver">
+		<property name="defaultErrorView" value="/500" />
+		<property name="messageConverters">
+			<list>
+				<ref bean="fastJsonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+	<mvc:annotation-driven>
+		<!-- 注册消息转换器 -->
+		<mvc:message-converters>
+			<ref bean="fastJsonHttpMessageConverter" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- 静态资源 -->
+	<mvc:resources location="/dist/" mapping="/dist/**"></mvc:resources>
+	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+
+	<!-- FastJSON配置 -->
+	<bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
+		<property name="charset" value="UTF-8" />
+		<property name="dateFormat" value="yyyy-MM-dd HH:mm:ss" />
+		<property name="serializerFeatures">
+			<util:list>
+				<value>QuoteFieldNames</value>
+				<value>WriteDateUseDateFormat</value>
+				<value>WriteMapNullValue</value>
+			</util:list>
+		</property>
+	</bean>
+
+	<!-- JSON转换器，注意是4的版本 -->
+	<bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=utf-8</value>
+			</list>
+		</property>
+		<property name="fastJsonConfig" ref="fastJsonConfig" />
+	</bean>
+
+	<!-- 默认文本视图 -->
+	<!--<bean id="viewResolver" class="jetbrick.template.web.springmvc.JetTemplateViewResolver">
+		<property name="contentType" value="text/html; charset=utf-8" />
+		<property name="suffix" value=".html" />
+		<property name="prefix" value="/WEB-INF/views/"></property>
+
+		<property name="configLocation" value="classpath:jetbrick-template.properties" />
+
+		<property name="configProperties">
+			<props>
+				<prop key="jetx.input.encoding">utf-8</prop>
+				<prop key="jetx.output.encoding">utf-8</prop>
+			</props>
+		</property>
+	</bean>-->
+
+
+</beans>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangqiu.persistence.mapper.UserMapper">
+
+	<sql id="limitSql">
+		<if test="page.pageNum != null and page.pageSize != null">
+			<![CDATA[ limit ${ (page.pageNum-1)*page.pageSize },#{page.pageSize}]]>
+		</if>
+	</sql>
+
+	<select id="queryById" parameterType="hashmap" resultType="hashmap">
+		select * from t_wc_user where userid = #{userid}
+
+	</select>
+	
+
+</mapper>
