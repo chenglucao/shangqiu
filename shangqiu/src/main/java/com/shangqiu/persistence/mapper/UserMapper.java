@@ -3,10 +3,12 @@ package com.shangqiu.persistence.mapper;
 import java.util.Map;
 
 /**
- * Created by dev-101 on 2017/6/26.
+ * 微信用户
+ *
+ * Created by caochenglu
  */
 public interface UserMapper {
 
-    public Map queryUserById(Map map);
+    public Map queryUserByOpenId(Map map);
 
 }

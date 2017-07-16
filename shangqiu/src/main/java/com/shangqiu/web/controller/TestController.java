@@ -22,8 +22,8 @@ public class TestController {
 
     @RequestMapping("/index")
     @ResponseBody
-    public String index(@RequestParam Map<String,Object> map){
-        return JSON.toJSONString(userService.queryUserById(map));
+    public String queryUserByOpenId(@RequestParam Map<String,Object> map){
+        return JSON.toJSONString(userService.queryUserByOpenId(map));
     }
 
 }

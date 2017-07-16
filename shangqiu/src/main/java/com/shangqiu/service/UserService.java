@@ -16,8 +16,9 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
 
-    public Map queryUserById(Map map){
-      return  userMapper.queryUserById(map);
+    public Map queryUserByOpenId(Map map){
+
+        return  userMapper.queryUserByOpenId(map);
     }
 
 }
